@@ -1,0 +1,339 @@
+{
+    "info": {
+        "version": "2.0",
+        "description": "APIs for user note app",
+        "title": "User note app project APIs"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "swagger": "2.0",
+    "tags": [{
+        "name": "user-note-app-project APIs",
+        "description": "This documentation contains the API's to test user note app project."
+    }],
+    "basePath": "/",
+    "paths": {
+        "/users/signup": {
+            "post": {
+                "description": "Creates the user in the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User signup API"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "payload",
+                    "description": "user signup payload",
+                    "required": true,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }],
+                "summary": "Signup API for user.",
+                "responses": {
+                    "201": {
+                        "description": "User created successfully"
+                    },
+                    "200": {
+                        "description": "User already exists"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "description": "Allow user to login.",
+                "tags": [
+                    "User login API"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "payload",
+                    "description": "user login payload",
+                    "required": true,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "email": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "User login successful"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/users/logout": {
+            "parameters": [{
+                "in": "header",
+                "name": "Authorization",
+                "type": "string",
+                "description": "Bearer token",
+                "required": true
+            }],
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "description": "Allow user to logout.",
+                "tags": [
+                    "User logout API"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Please authenticate"
+                    }
+                }
+            }
+        },
+        "/notes": {
+            "parameters": [{
+                "in": "header",
+                "name": "Authorization",
+                "type": "string",
+                "description": "Bearer token",
+                "required": true
+            }],
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "description": "Creates a single note in the database for logged in user.",
+                "tags": [
+                    "Create a note."
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "payload",
+                    "description": "user note payload",
+                    "required": true,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Note created successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Please authenticate"
+                    }
+                }
+            },
+            "get": {
+                "parameters": [{
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true,
+                        "description": "limit"
+                    },
+                    {
+                        "in": "query",
+                        "name": "skip",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "skip",
+                        "required": true
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "description": "Get all notes from database for logged in user.",
+                "tags": [
+                    "Get notes."
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fetched all notes successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Please authenticate"
+                    },
+                    "404": {
+                        "description": "No notes found for user"
+                    }
+                }
+            }
+        },
+        "/notes/{title}": {
+            "parameters": [{
+                "in": "header",
+                "name": "Authorization",
+                "type": "string",
+                "description": "Bearer token",
+                "required": true
+            }, {
+                "name": "title",
+                "in": "path",
+                "required": true,
+                "type": "string",
+                "description": "title"
+            }],
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "description": "Get a single note by title from database for logged in user.",
+                "tags": [
+                    "Get a note."
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fetched note successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Please authenticate"
+                    },
+                    "404": {
+                        "description": "No note found for user"
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "description": "Update a single note in the database for logged in user.",
+                "tags": [
+                    "Update a note."
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "payload",
+                    "description": "update note payload",
+                    "required": true,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Note updated successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Please authenticate"
+                    },
+                    "404": {
+                        "description": "No note found to update"
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "description": "Delete a single note by title from database for logged in user.",
+                "tags": [
+                    "Delete a note."
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted note successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Please authenticate"
+                    }
+                }
+            }
+        }
+    }
+}
